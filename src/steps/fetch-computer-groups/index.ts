@@ -20,7 +20,7 @@ const step: IntegrationStep<TrendMicroIntegrationConfig> = {
     {
       resourceName: 'Computer Group',
       _type: COMPUTER_GROUP_TYPE,
-      _class: 'Group',
+      _class: ['Group'],
     },
   ],
   relationships: [],
@@ -58,7 +58,7 @@ export function createComputerGroupEntity(
         //
         // So for now we will consider computerGroups as
         // generic Group entities.
-        _class: 'Group',
+        _class: ['Group'],
         cloudType: group.cloudType,
         type: group.type,
 

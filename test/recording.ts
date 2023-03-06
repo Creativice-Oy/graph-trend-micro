@@ -1,24 +1,19 @@
 import {
+  setupRecording,
   Recording,
-  setupRecording as sdkSetupRecording,
+  SetupRecordingInput,
+  mutations,
 } from '@jupiterone/integration-sdk-testing';
-export { Recording } from '@jupiterone/integration-sdk-testing';
 
-type SetupParameters = Parameters<typeof sdkSetupRecording>[0];
+export { Recording };
 
-/**
- * This function is a wrapper around the SDK's setup recording function
- * that redacts the 'api-secret-key' header.
- */
-export function setupRecording({
-  name,
-  directory,
-  ...overrides
-}: SetupParameters): Recording {
-  return sdkSetupRecording({
-    directory,
-    name,
-    redactedRequestHeaders: ['api-secret-key'],
-    ...overrides,
+export function setupProjectRecording(
+  input: Omit<SetupRecordingInput, 'mutateEntry'>,
+): Recording {
+  return setupRecording({
+    ...input,
+    redactedRequestHeaders: ['Authorization', 'api-secret-key'],
+    redactedResponseHeaders: ['set-cookie'],
+    mutateEntry: mutations.unzipGzippedRecordingEntry,
   });
 }

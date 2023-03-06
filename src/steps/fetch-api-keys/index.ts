@@ -2,6 +2,7 @@ import {
   Entity,
   IntegrationStep,
   createIntegrationEntity,
+  parseTimePropertyValue,
 } from '@jupiterone/integration-sdk-core';
 
 import { createDeepSecurityClient, DeepSecurityApiKey } from '../../provider';
@@ -16,7 +17,7 @@ const step: IntegrationStep<TrendMicroIntegrationConfig> = {
     {
       resourceName: 'API Key',
       _type: API_KEY_TYPE,
-      _class: 'Key',
+      _class: ['Key'],
     },
   ],
   relationships: [],
@@ -39,12 +40,12 @@ export function createApiKeyEntity(apiKey: DeepSecurityApiKey): Entity {
       assign: {
         _key: id,
         _type: API_KEY_TYPE,
-        _class: 'Key',
+        _class: ['Key'],
 
         // normalize property names to match data model
         id,
         name: apiKey.keyName,
-        createdOn: apiKey.created,
+        createdOn: parseTimePropertyValue(apiKey.created, 'ms'),
       },
     },
   });

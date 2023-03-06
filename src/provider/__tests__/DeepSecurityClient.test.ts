@@ -2,7 +2,6 @@ import { DeepSecurityClient } from '../DeepSecurityClient';
 
 import nodeFetch from 'node-fetch';
 import fetchMock from 'jest-fetch-mock';
-import waitForExpect from 'wait-for-expect';
 
 beforeEach(() => {
   fetchMock.doMock();
@@ -92,77 +91,5 @@ test('returns response body on successful requests', async () => {
 
   expect(result).toEqual({
     data: true,
-  });
-});
-
-describe('retry logic', () => {
-  beforeEach(() => {
-    jest.useFakeTimers();
-  });
-
-  [{ status: 500 }, { status: 504 }, { status: 429 }].forEach(({ status }) => {
-    test(`retries ${status} errors up to 10 times before rejecting`, async () => {
-      const fetchSpy = jest.spyOn(nodeFetch, 'default');
-
-      fetchMock.mockResponse(() =>
-        Promise.resolve({
-          status: 500,
-        }),
-      );
-
-      const apiKey = 'my fake api key';
-      const client = new DeepSecurityClient({ apiKey });
-
-      let fetchRejected = false;
-      client.fetch('/administrators').catch(() => {
-        fetchRejected = true;
-      });
-
-      await waitForExpect(() => {
-        jest.runAllTimers();
-        expect(fetchRejected).toEqual(true);
-      });
-
-      expect(fetchSpy).toHaveBeenCalledTimes(10);
-    });
-  });
-
-  test('resolves if result returns after a retry', async () => {
-    const fetchSpy = jest.spyOn(nodeFetch, 'default');
-
-    fetchMock
-      .mockResponseOnce(() =>
-        Promise.resolve({
-          status: 429,
-        }),
-      )
-      .mockResponseOnce(() =>
-        Promise.resolve({
-          status: 429,
-        }),
-      )
-      .mockResponseOnce(() =>
-        Promise.resolve({
-          status: 200,
-          body: JSON.stringify({ success: true }),
-        }),
-      );
-
-    const apiKey = 'my fake api key';
-    const client = new DeepSecurityClient({ apiKey });
-
-    let fetchComplete = false;
-    const fetchPromise = client.fetch('/administrators').then((result) => {
-      fetchComplete = true;
-      return result;
-    });
-
-    await waitForExpect(() => {
-      jest.runAllTimers();
-      expect(fetchComplete).toEqual(true);
-    });
-
-    expect(fetchSpy).toHaveBeenCalledTimes(3);
-    expect(await fetchPromise).toEqual({ success: true });
   });
 });

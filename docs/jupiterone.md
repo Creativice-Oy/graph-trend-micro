@@ -66,7 +66,7 @@ NOTE: ALL OF THE FOLLOWING DOCUMENTATION IS GENERATED USING THE
 "j1-integration document" COMMAND. DO NOT EDIT BY HAND! PLEASE SEE THE DEVELOPER
 DOCUMENTATION FOR USAGE INFORMATION:
 
-https://github.com/JupiterOne/sdk/blob/master/docs/integrations/development.md
+https://github.com/JupiterOne/sdk/blob/main/docs/integrations/development.md
 ********************************************************************************
 -->
 
@@ -76,17 +76,17 @@ https://github.com/JupiterOne/sdk/blob/master/docs/integrations/development.md
 
 The following entities are created:
 
-| Resources          | Entity `_type`                   | Entity `_class` |
-| ------------------ | -------------------------------- | --------------- |
-| API Key            | `trend_micro_api_key`            | `Key`           |
-| Administrator      | `trend_micro_administrator`      | `User`          |
-| Administrator Role | `trend_micro_administrator_role` | `AccessRole`    |
-| Computer           | `trend_micro_computer`           | `Host`          |
-| Computer Group     | `trend_micro_computer_group`     | `Group`         |
+| Resources          | Entity `_type`                   | Entity `_class`  |
+| ------------------ | -------------------------------- | ---------------- |
+| API Key            | `trend_micro_api_key`            | `Key`            |
+| Administrator      | `trend_micro_administrator`      | `User`           |
+| Administrator Role | `trend_micro_administrator_role` | `AccessRole`     |
+| Computer           | `trend_micro_computer`           | `Host`, `Device` |
+| Computer Group     | `trend_micro_computer_group`     | `Group`          |
 
 ### Relationships
 
-The following relationships are created/mapped:
+The following relationships are created:
 
 | Source Entity `_type`        | Relationship `_class` | Target Entity `_type`            |
 | ---------------------------- | --------------------- | -------------------------------- |

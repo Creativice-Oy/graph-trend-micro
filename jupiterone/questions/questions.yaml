@@ -1,0 +1,5 @@
+---
+sourceId: managed:trendmicro
+integrationDefinitionId: '${integration_definition_id}'
+questions:
+  []

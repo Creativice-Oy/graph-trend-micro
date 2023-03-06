@@ -2,6 +2,7 @@ import {
   Entity,
   IntegrationStep,
   createIntegrationEntity,
+  parseTimePropertyValue,
 } from '@jupiterone/integration-sdk-core';
 
 import { createDeepSecurityClient, DeepSecurityComputer } from '../../provider';
@@ -18,7 +19,7 @@ const step: IntegrationStep<TrendMicroIntegrationConfig> = {
     {
       resourceName: 'Computer',
       _type: COMPUTER_TYPE,
-      _class: 'Host',
+      _class: ['Host', 'Device'],
     },
   ],
   relationships: [],
@@ -45,7 +46,7 @@ export function createComputerEntity(computer: DeepSecurityComputer): Entity {
 
         // normalize property names to match data model
         id,
-        createdOn: computer.created,
+        createdOn: parseTimePropertyValue(computer.created, 'ms'),
         name: computer.displayName || computer.hostName,
         hostname: computer.hostName,
         platform: extractPlatform(computer.platform),

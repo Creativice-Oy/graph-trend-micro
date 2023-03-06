@@ -2,6 +2,7 @@ import {
   Entity,
   IntegrationStep,
   createIntegrationEntity,
+  parseTimePropertyValue,
 } from '@jupiterone/integration-sdk-core';
 
 import {
@@ -20,7 +21,7 @@ const step: IntegrationStep<TrendMicroIntegrationConfig> = {
     {
       resourceName: 'Administrator',
       _type: ADMIN_TYPE,
-      _class: 'User',
+      _class: ['User'],
     },
   ],
   relationships: [],
@@ -44,12 +45,12 @@ export function createAdministratorEntity(
       assign: {
         _key: createAdministratorEntityIdentifier(administrator.ID),
         _type: ADMIN_TYPE,
-        _class: 'User',
+        _class: ['User'],
 
         roleId: administrator.roleID,
         // normalize property names to match data model
         name: administrator.fullName || administrator.username,
-        createdOn: administrator.created,
+        createdOn: parseTimePropertyValue(administrator.created, 'ms'),
       },
     },
   });
